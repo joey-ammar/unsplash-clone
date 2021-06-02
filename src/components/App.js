@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
-import unsplash from "../api/unsplash";
 import ImageList from "./ImageList";
+import axios from "axios";
+require("dotenv").config();
+
+const { REACT_APP_MY_ENV } = process.env;
+console.log(REACT_APP_MY_ENV);
 const App = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
-  console.log(loader);
   const onSearchSubmit = (term) => {
-    unsplash
-      .get(`/search/photos`, {
-        params: {
-          query: term,
-        },
-      })
+    axios
+      .get(
+        `https://api.unsplash.com/search/photos?query=${term}&client_id=${process.env.REACT_APP_MY_ENV}`
+      )
       .then((response) => setData(response.data.results))
       .catch((error) => console.log(error));
   };
